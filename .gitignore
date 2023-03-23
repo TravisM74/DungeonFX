@@ -1,2 +1,4 @@
 # ignoring the config file
 module-info.java
+/FXML
+/old_Code
