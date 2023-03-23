@@ -9,7 +9,7 @@ package Gfx;
 	import javafx.scene.paint.Color;
 	import javafx.scene.shape.Line;
 
-	public class Long_Sword extends Group{
+	public class Long_Sword extends Group implements HeldItem{
 		
 		private Group item;
 		

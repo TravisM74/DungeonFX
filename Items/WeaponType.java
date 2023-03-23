@@ -1,11 +1,19 @@
 package Items;
 
+import Gfx.Axe;
+import Gfx.Dagger;
+import Gfx.Fist;
+import Gfx.HeldItem;
+import Gfx.Long_Sword;
+import Gfx.Short_Sword;
+
 public class WeaponType {
 	private WeaponTypeEnum weaponType;
 	private int damageDice;
 	private DamageType damageType;
 	private String desc;
 	private Size size;
+	private HeldItem mainhandHeldItem;  
 	
 	
 	
@@ -21,16 +29,20 @@ public class WeaponType {
 			this.desc = " fists ";
 			this.damageDice = 3;
 			this.damageType = new DamageType(DamageTypeEnum.BLUDGEON);
+			this.mainhandHeldItem = new Fist();
 			break;
 		case SHORT_SWORD:
 			this.desc = " short sword ";
 			this.damageDice = 6;
 			this.damageType = new DamageType(DamageTypeEnum.SLASH);
+			this.mainhandHeldItem = new Short_Sword();
+			
 			break;
 		case LONG_SWORD:
 			this.damageDice = 8;
 			this.damageType = new DamageType(DamageTypeEnum.SLASH);
 			this.desc = " long sword ";
+			this.mainhandHeldItem =new Long_Sword();
 			break;	
 		case TWO_HANDED_SWORD:
 			this.damageDice = 12;
@@ -41,6 +53,7 @@ public class WeaponType {
 			this.damageDice = 8;
 			this.damageType = new DamageType(DamageTypeEnum.SLASH);
 			this.desc = " axe ";
+			this.mainhandHeldItem = new Axe();
 			break;	
 		case TWO_HANDED_AXE:
 			this.damageDice = 12;
@@ -51,6 +64,7 @@ public class WeaponType {
 			this.damageDice = 4;
 			this.damageType = new DamageType(DamageTypeEnum.PEARCE);
 			this.desc = " dagger ";
+			this.mainhandHeldItem = new Dagger();
 			break;
 		
 			

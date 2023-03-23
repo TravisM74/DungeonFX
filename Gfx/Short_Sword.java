@@ -7,7 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class Short_Sword extends Group{
+public class Short_Sword extends Group implements HeldItem{
 	
 	private Group item;
 	

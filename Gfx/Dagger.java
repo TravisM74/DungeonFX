@@ -1,19 +1,16 @@
 package Gfx;
 
 
-
 import Items.Quality;
 import Items.QualityEnum;
 import application.WorldEntity;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 
-public class Axe extends Group implements HeldItem{
+public class Dagger extends Group implements HeldItem{
 	
 	private Group item;
-	
 	private Color color;
 	private Quality quality;
 	private Color baseColor;
@@ -21,12 +18,13 @@ public class Axe extends Group implements HeldItem{
 	private double scale = .14;
 	private double startPointX = 0;
 	private double startPointY = 0;
-	private double swordLength = 40;
-	private double handleEnd = 120;
+	private double swordLength = 20;
+	private double handleEnd = 20;
 	private double xLoc;
 	private double yLoc;
+	public Dagger() {
 	
-	public Axe() {
+	
 		
 		this.item = new Group();
 		
@@ -48,18 +46,15 @@ public class Axe extends Group implements HeldItem{
 		
 	}
 	public void drawBlade() {
-		Polygon axeHead = new Polygon();
-		axeHead.getPoints().setAll(
-				startPointX + handleEnd*scale				,startPointY,
-				startPointX + handleEnd*scale -(20*scale)	, startPointY +(35*scale),
-				startPointX + handleEnd*scale +(30*scale)	, startPointY +(35*scale),
-				startPointX + handleEnd*scale +(10*scale)	, startPointY ,
-				startPointX + handleEnd*scale 				, startPointY-(20*scale) );
-				
-		axeHead.setStroke(Color.GRAY);
+		Line bladeLine = new Line();
 		
-		axeHead.setStrokeWidth(24*scale);
-		item.getChildren().add(axeHead);
+		bladeLine.setStroke(Color.GRAY);
+		bladeLine.setStartX(startPointX + handleEnd*scale + (12*scale));
+		bladeLine.setStartY(startPointY);
+		bladeLine.setEndX(startPointX + swordLength*scale);
+		bladeLine.setEndY(startPointY);
+		bladeLine.setStrokeWidth(24*scale);
+		item.getChildren().add(bladeLine);
 		
 	}
 	
@@ -77,5 +72,3 @@ public class Axe extends Group implements HeldItem{
 		this.quality =quality;
 	}
 }
-
-

@@ -49,7 +49,6 @@ public class Humanoid extends Group {
 	private double headStartPointX= 25;
 	private double headStartPointY= 10;
 	
-	
 	private Circle head;
 	
 	private Circle leftHand;
@@ -75,6 +74,8 @@ public class Humanoid extends Group {
 	private double rightKneeX ;
 	
 	private double hipToLegY;
+	
+	
 	
 	public Humanoid(Color hair,Color skin,Color eyes,Color top,Color pants,Color shoes) {
 		this.hairColor = hair;
