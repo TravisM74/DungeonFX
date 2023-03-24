@@ -18,9 +18,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import Control.MovementControlButtons;
+import Gfx.HeldItem;
 import Gfx.Humanoid;
 import Items.Item;
 import Items.ItemTypeEnum;
+import Items.LootTables;
 import Items.QualityEnum;
 import Items.UsedEnum;
 import Items.WeaponTypeEnum;
@@ -64,6 +66,8 @@ public class Main extends Application {
 	private LootInterface lootThings;
 	private Humanoid playerForm;
 	private MovementControlButtons moveButtons;
+	private HeldItem mainhandHeld;
+	private HeldItem offhandHeld;
 	
 	private ArrayList<WorldEntity> mobQue;
 	
@@ -89,7 +93,7 @@ public class Main extends Application {
 			}
 						
 			//main PlayWindow name
-			centerWindow.getChildren().addAll(board,playerForm.getBody());
+			centerWindow.getChildren().addAll(board,playerForm.getBody(),mainhandHeld.getItemForm());
 			gameWindows.setCenter(centerWindow);
 					
 			scene = new Scene(root,2200,1300);
@@ -112,6 +116,8 @@ public class Main extends Application {
 		this.player = new Mob("Test_Victim",1,race,cClass,entity,this.world);
 		
 		playerForm = this.player.getCClass().getEntityForm();
+		mainhandHeld = this.player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm();
+		
 	}
 	
 	public void processTurnEvents(Stage primaryStage) {
@@ -312,11 +318,20 @@ public class Main extends Application {
 					orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(orcEntity.getxLoc()));
 					orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateY(world.getYPixel(orcEntity.getyLoc()));
 					orcEntity.getMob().getCClass().getEntityForm().setEntityColor(Color.GREEN);
-					Item orcAxe = new Item (" orc forged ",ItemTypeEnum.WEAPON,WeaponTypeEnum.AXE ,QualityEnum.COMMON,UsedEnum.MAIN_HAND, 0, 1, 7);
+						
 					orcEntity.getMob().getInventory().addCopperCoin(rand.nextInt(25));
-					orcEntity.getMob().getInventory().setMainHandItem(orcAxe);
+					
+					LootTables lootTable = new LootTables();
+					orcEntity.getMob().getInventory().setMainHandItem(lootTable.getRandomCommonWeapon());
+					
 					orcEntity.getMob().setDamageMod(2);
 					centerWindow.getChildren().add(orcEntity.getMob().getCClass().getEntityForm().getBody());
+					createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+								.setTranslateX(world.getXPixel(orcEntity.getxLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandX());
+					createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+								.setTranslateY(world.getXPixel(orcEntity.getyLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandY());
+					
+					centerWindow.getChildren().add(createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
 					
 					mobQue.add(orcEntity);
 					notValidSpot = false;

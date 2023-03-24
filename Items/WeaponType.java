@@ -70,6 +70,9 @@ public class WeaponType {
 			
 		}
 	}
+	public HeldItem getMainhandHeldItemForm() {
+		return this.mainhandHeldItem;
+	}
 	public int getDamageDice() {
 		return this.damageDice;
 	}

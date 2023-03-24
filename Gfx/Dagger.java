@@ -23,11 +23,11 @@ public class Dagger extends Group implements HeldItem{
 	private double startPointY = 0;
 	private double swordLength = 20;
 	private double handleEnd = 20;
-	private double xLoc;
-	private double yLoc;
+	
 	private double itemRotateAngle;
 	
 	public Dagger() {
+		this.item = new Group();
 	
 		Random rand = new Random();
 		itemRotateAngle = rand.nextDouble(180) -90;
@@ -39,7 +39,6 @@ public class Dagger extends Group implements HeldItem{
 		item.getTransforms().add(rotate);
 		rotate.setAngle(itemRotateAngle);
 		
-		this.item = new Group();
 		
 		//this.baseColor = quality.getBaseColor();
 		

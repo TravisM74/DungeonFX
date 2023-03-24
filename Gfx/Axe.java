@@ -26,8 +26,7 @@ public class Axe extends Group implements HeldItem{
 	private double startPointY = 0;
 	private double swordLength = 40;
 	private double handleEnd = 120;
-	private double xLoc;
-	private double yLoc;
+	
 	private double itemRotateAngle;
 	
 	public Axe() {

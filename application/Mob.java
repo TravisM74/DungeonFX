@@ -171,7 +171,6 @@ public class Mob {
 				"\n       HP: "+getHitPoints() +"/" +getMaxHitPoints() +
 				"\n----------------------------" +
 				"\n "+ this.stats.toSting() +
-				
 				"Currently:" + status()
 				 );
 	}

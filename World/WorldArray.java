@@ -73,6 +73,12 @@ public class WorldArray {
 				this.tile.add(entity);
 				entity.getMob().getCClass().getEntityForm().getBody().setTranslateX(getXPixel(entity.getxLoc()));
 				entity.getMob().getCClass().getEntityForm().getBody().setTranslateY(getYPixel(entity.getyLoc()));
+				entity.getMob().getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+							.setTranslateX(getXPixel(entity.getxLoc())+entity.getMob().getCClass().getEntityForm().getRightHandX());
+				entity.getMob().getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+							.setTranslateY(getXPixel(entity.getyLoc())+entity.getMob().getCClass().getEntityForm().getRightHandY());
+				
+
 				notValidSpot = false;
 			}
 		}
