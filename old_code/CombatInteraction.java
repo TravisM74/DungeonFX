@@ -3,7 +3,6 @@ package old_code;
 import java.io.IOException;
 
 import World.WorldArray;
-import application.Player;
 import application.WorldEntity;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

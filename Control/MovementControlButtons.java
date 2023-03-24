@@ -1,11 +1,11 @@
 package Control;
 
 import World.WorldArray;
-import application.Player;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import old_code.Player;
 
 public class MovementControlButtons {
 		BorderPane rootPane;

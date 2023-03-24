@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import application.Player;
+import application.Mob;
 import application.WorldEntity;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import old_code.Player;
 
 public class WorldArray {
 	
@@ -52,7 +53,7 @@ public class WorldArray {
 		this.worldDepth.add(level);
 		
 	}
-	public void moveEntity(Player player,WorldEntity entity) {
+	public void moveEntity(Mob player,WorldEntity entity) {
 		rand = new Random();
 		//removing entity tag from tile
 		this.worldDepth.get(player.getDepth()).getTile(player.getEntity().getxLoc(), player.getEntity().getyLoc()).remove(entity);

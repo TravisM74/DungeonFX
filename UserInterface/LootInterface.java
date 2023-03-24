@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import Items.Item;
 import World.Tile;
 import World.WorldArray;
-import application.Player;
+import application.Mob;
 import application.WorldEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import old_code.Player;
 
 public class LootInterface {
 	
@@ -35,14 +36,14 @@ public class LootInterface {
 	private Stage stage;
 	private ArrayList<WorldEntity> lootFound;
 	private Button backToMain;
-	private Player player;
+	private Mob player;
 	private WorldArray world;
 	private Tile thisTile;
 	private VBox centerArea;
 	private VBox rightPaneLoot;
 	private VBox leftPanePlayer;
 	
-	public LootInterface(Player player,WorldArray world,Stage stage,Scene scene) {
+	public LootInterface(Mob player,WorldArray world,Stage stage,Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
 		this.player = player;

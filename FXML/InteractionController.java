@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import Interaction.ToHitAC0;
 import World.Tile;
 import World.WorldArray;
-import application.Player;
 import application.WorldEntity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import old_code.Player;
 
 
 public class InteractionController {

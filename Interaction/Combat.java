@@ -9,13 +9,14 @@ import Items.Item;
 import World.Tile;
 import World.WorldArray;
 import application.Entities;
-import application.Player;
+import application.Mob;
 import application.WorldEntity;
 import attributes.StatusState;
+import old_code.Player;
 
 public class Combat {
 	private WorldEntity entity;
-	private Player player;
+	private Mob player;
 	private ToHitAC0 playerToHit;
 	private ToHitAC0 mobToHitPlayer;
 	private int damage;
@@ -27,7 +28,7 @@ public class Combat {
 	private int round;
 	private int mobCount;
 	
-		public Combat(Player player,WorldEntity entity, WorldArray world ) {
+		public Combat(Mob player,WorldEntity entity, WorldArray world ) {
 			this.player = player;
 			this.entity = entity;
 			this.world = world;
@@ -60,7 +61,7 @@ public class Combat {
 		if (this.entity.getMob().getHitPoints() > 0) {
 			this.combatText.add("the "+ this.entity.getMob().getName()+" still stands and retaliates.\n");
 		} else {
-			this.entity.getMob().isDead();
+			this.entity.getMob().setDead();
 			this.entity.getMob().getCClass().getEntityForm().getBody().setRotate(90);
 			dropLoot();
 			this.combatText.add("you Killed "+entity.getMob().getName()+ " for a total damage of "+entity.getMob().getMaxHitPoints()+"\n ");
@@ -77,7 +78,7 @@ public class Combat {
 			if (mobToHitPlayer.tryTohit()) {
 				damageToPlayerFrom();
 				if(this.player.getHitPoints() <= 0) {
-					this.player.isDead();
+					this.player.setDead();
 					this.resolved = true;
 		
 					this.combatText.add("The "+this.entity.getMob().getName()+" cheers your defeat...\n");
@@ -109,13 +110,13 @@ public class Combat {
 	}
 
 	
-	public void playerToHitMob(Player player, WorldEntity entity) {
+	public void playerToHitMob(Mob player, WorldEntity entity) {
 		playerToHit =new ToHitAC0(entity.getMob().getCClass().getArmourClass(),
 					player.getLevel(),
 					player.getCClass().getCharClass());
 		}
 		
-	public void toHitPlayer(Player player, WorldEntity entity) {
+	public void toHitPlayer(Mob player, WorldEntity entity) {
 		mobToHitPlayer=new ToHitAC0(this.player.getInventory().armourClass(),
 				this.entity.getMob().getLevel(),
 				this.entity.getMob().getCClass().getCharClass());
@@ -201,7 +202,7 @@ public class Combat {
 		}
 		
 	}
-	public Player getPlayer() {
+	public Mob getPlayer() {
 		return this.player;
 	}
 	public WorldEntity getEntity() {

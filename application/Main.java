@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import old_code.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -54,7 +55,9 @@ public class Main extends Application {
 	public final int HEIGHT = 19;
 	
 	
-	private Player player;
+	//private Player player;
+	private Mob player;
+
 	private WorldArray world;
 	private WorldEntity entity;
 	private CombatInterface combatInt;
@@ -63,19 +66,7 @@ public class Main extends Application {
 	private MovementControlButtons moveButtons;
 	
 	private ArrayList<WorldEntity> mobQue;
-	/*
-	 * Issues noted
-	 *
-	 * 
-	 * 
-	 * lootmethod to chage to a choicebox  stype option with button controled for loot / drop / close
-	 * similar to character sheet method
-	 * 
-	 * seems if the player misses and attack the mod does not retaliate ?
-	 * 
-	 * 
-	 * 
-	 */
+	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -86,7 +77,7 @@ public class Main extends Application {
 			this.world = new WorldArray();
 			createPlayer();
 			
-			moveButtons = new MovementControlButtons(this.player);
+			//moveButtons = new MovementControlButtons(this.player);
 			root = new BorderPane();
 			gameWindows = new BorderPane();
 			centerWindow = new Pane();
@@ -103,7 +94,7 @@ public class Main extends Application {
 					
 			scene = new Scene(root,2200,1300);
 			//lootScene = new Scene(lootRoot,2200,1300);
-			cSheet = new CharacterSheet(this.player,this.stage, this.scene);
+			cSheet = new CharacterSheet(this.player ,this.stage, this.scene);
 			
 			movementControl(primaryStage);
 			
@@ -118,7 +109,8 @@ public class Main extends Application {
 		CharacterClass cClass  = new CharacterClass(CharClass.FIGHTER);
 		this.entity = new WorldEntity(Entities.PLAYER);
 		Race race = new Race(RaceEnum.HUMAN);
-		this.player = new Player("Test_Victim",1,world, race,cClass,entity);
+		this.player = new Mob("Test_Victim",1,race,cClass,entity,this.world);
+		
 		playerForm = this.player.getCClass().getEntityForm();
 	}
 	
@@ -297,7 +289,7 @@ public class Main extends Application {
 			CharacterClass cClass = new CharacterClass(CharClass.ORC_FIGHTER);
 			Race race = new Race(RaceEnum.ORC);
 			WorldEntity orcEntity= new WorldEntity(Entities.MOB);
-			Mob createdMob = new Mob(name,level,race,cClass);
+			Mob createdMob = new Mob(name,level,race,cClass,orcEntity,this.world);
 			orcEntity.setMob(createdMob);
 			Random rand = new Random();
 			boolean notValidSpot = true;

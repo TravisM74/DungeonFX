@@ -10,7 +10,7 @@ import Interaction.ToHitAC0;
 import Items.Item;
 import World.Tile;
 import World.WorldArray;
-import application.Player;
+import application.Mob;
 import application.WorldEntity;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import old_code.Player;
 
 public class CombatInterface {
 	
@@ -36,11 +37,11 @@ public class CombatInterface {
 	private Tile tile;
 
 	
-	Player player;
-	WorldEntity entity;
+	private Mob player;
+	private WorldEntity entity;
 	
 	
-	public CombatInterface(Player player, WorldEntity entity, WorldArray world, Stage primaryStage) {
+	public CombatInterface(Mob player, WorldEntity entity, WorldArray world, Stage primaryStage) {
 		this.combatRoot = new BorderPane();
 		this.player = player;
 		this.entity = entity;

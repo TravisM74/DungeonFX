@@ -1,12 +1,15 @@
 package Gfx;
 
 
+import java.util.Random;
+
 import Items.Quality;
 import Items.QualityEnum;
 import application.WorldEntity;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.transform.Rotate;
 
 public class Dagger extends Group implements HeldItem{
 	
@@ -22,9 +25,19 @@ public class Dagger extends Group implements HeldItem{
 	private double handleEnd = 20;
 	private double xLoc;
 	private double yLoc;
+	private double itemRotateAngle;
+	
 	public Dagger() {
 	
-	
+		Random rand = new Random();
+		itemRotateAngle = rand.nextDouble(180) -90;
+		
+		Rotate rotate = new Rotate();
+		rotate.setPivotX(startPointX);
+		rotate.setPivotY(startPointY);
+		
+		item.getTransforms().add(rotate);
+		rotate.setAngle(itemRotateAngle);
 		
 		this.item = new Group();
 		

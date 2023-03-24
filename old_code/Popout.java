@@ -2,7 +2,6 @@ package old_code;
 
 import java.util.ArrayList;
 
-import application.Player;
 import application.WorldEntity;
 import javafx.application.Application;
 import javafx.scene.Scene;

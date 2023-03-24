@@ -1,7 +1,7 @@
 package UserInterface;
 
 import Items.Item;
-import application.Player;
+import application.Mob;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,20 +10,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import old_code.Player;
 
 public class CharacterSheet {
 	Scene characterSheet;
 	Stage stage;
 	Scene scene;
 	BorderPane root;
-	Player player;
+	Mob player;
 	Button switchButton;
 	VBox leftPane;
 	HBox topPane;
 	VBox rightPane;
 	HBox bottomPane;
 	
-	public CharacterSheet(Player player,Stage stage,Scene scene) {
+	public CharacterSheet(Mob player,Stage stage,Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
 		
