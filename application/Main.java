@@ -112,7 +112,7 @@ public class Main extends Application {
 		CharacterClass cClass  = new CharacterClass(CharClass.FIGHTER);
 		this.entity = new WorldEntity(Entities.PLAYER);
 		Race race = new Race(RaceEnum.HUMAN);
-		this.player = new Mob("Test_Victim",1,race,cClass,entity,this.world,centerWindow);
+		this.player = new Mob("Test_Victim",1,race,cClass,entity,this.world);
 		
 		playerForm = this.player.getCClass().getEntityForm();
 		this.player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm().setTranslateX(player.getCClass().getEntityForm().getTranslateX()+player.getCClass().getEntityForm().getRightHandX());
@@ -299,7 +299,7 @@ public class Main extends Application {
 			CharacterClass cClass = new CharacterClass(CharClass.ORC_FIGHTER);
 			Race race = new Race(RaceEnum.ORC);
 			WorldEntity orcEntity= new WorldEntity(Entities.MOB);
-			Mob createdMob = new Mob(name,level,race,cClass,orcEntity,this.world,centerWindow);
+			Mob createdMob = new Mob(name,level,race,cClass,orcEntity,this.world);
 			orcEntity.setMob(createdMob);
 			Random rand = new Random();
 			boolean notValidSpot = true;

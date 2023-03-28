@@ -56,7 +56,7 @@ public class Mob {
 	
 	private Group entityVisual;
 	
-	public Mob(String name,int level ,Race race,CharacterClass cClass,WorldEntity entity,WorldArray world ,Pane root) {
+	public Mob(String name,int level ,Race race,CharacterClass cClass,WorldEntity entity,WorldArray world ) {
 		this.root = root;
 		this.entity = entity;
 		this.alive = true;
@@ -81,7 +81,10 @@ public class Mob {
 		//addEntityVisualBody(entity.getxLoc(),entity.getyLoc());
 		//addEntityVisualWeapon();
 	}
-	/*
+	/* test code 
+	 * trying to simplify the updating of visuals
+	 * 
+	 * concept failed initially loot for other solutions
 	public void addEntityVisual(Group visual) {
 		entityVisual.getChildren().add(visual);
 	}
@@ -103,9 +106,7 @@ public class Mob {
 		return this.entityVisual;
 	}
 	 */
-	public Pane getRoot() {
-		return this.root;
-	}
+	
 	public Stats getStats() {
 		return this.stats;
 	}
