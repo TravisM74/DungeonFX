@@ -222,9 +222,9 @@ public class HumanoidInventory {
 		}
 		
 		//mainHandGear.getItems().add(this.mainHand);
-	
 		mainHand.getChildren().addAll(mainHandLabel,mainHandGear);
 		gearSet = false;
+		
 		VBox offHand = new VBox();
 		Label offHandLabel = new Label("in offhand:\n "+this.offHand.getDescription());
 		offHandGear = new ChoiceBox<Item>();
@@ -269,7 +269,9 @@ public class HumanoidInventory {
 		this.arms = armsGear.getValue();
 		this.body = torsoGear.getValue();
 		this.offHand = offHandGear.getValue();
+		this.mainHand.setVisabilityFalse();
 		this.mainHand = mainHandGear.getValue();
+		this.mainHand.setVisabilityTrue();
 		this.legs = legsGear.getValue();
 		displayCharacterInventoryPane();
 	}

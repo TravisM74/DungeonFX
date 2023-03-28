@@ -15,7 +15,7 @@ public class Item {
 	private UsedEnum location;
 	private int magicBonus;
 	private ItemTypeEnum itemTypeEnum;
-	private double opacity;
+	private boolean visability;
 	
 
 	
@@ -33,7 +33,7 @@ public class Item {
 		this.magicBonus = magicBonus;
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
-		
+		this.visability = false;
 		
 	}
 	//Adding a weapon item
@@ -49,6 +49,7 @@ public class Item {
 		this.itemTypeEnum = typeOfItem;
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
+		this.visability = true;
 	
 	}
 	
@@ -65,10 +66,17 @@ public class Item {
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
 		this.weightCapacity = 0;
-		
+		this.visability = false;
 	}
-	
-	
+	public boolean getVisability() {
+		return this.visability;
+	}
+	public void setVisabilityFalse() {
+		this.visability= false;
+	}
+	public void setVisabilityTrue() {
+		this.visability = true;
+	}
 	public ArmourType getArmourtype() {
 		return this.armourType;
 	}

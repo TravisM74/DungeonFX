@@ -78,6 +78,7 @@ public class LootInterface {
 			int confirmation =JOptionPane.showConfirmDialog(null, "Loot the "+ entity.getItem().toString(), "Confirmation",JOptionPane.YES_NO_OPTION);
 			if (confirmation == JOptionPane.YES_OPTION){
 				this.player.getInventory().AddItemToBackPack(entity.getItem());
+				entity.getItem().setVisabilityFalse();
 				this.thisTile.remove(entity);
 			} else {
 				

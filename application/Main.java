@@ -130,7 +130,7 @@ public class Main extends Application {
 		System.out.println("PTE:"+ this.player.getStatus() +" HP: "+ this.player.getHitPoints()+" regen ="+ regen +" move:"+this.player.getmoveRestriction());
 		refreshLeftPanel();
 		testForInteractions(primaryStage);
-				
+		updateWeaponVisuals();	
 		if((this.player.getStatusState() == (StatusState.RESTING))|| (this.player.getStatusState() == (StatusState.UNCONCEOUS))){
 			this.player.isAlive();
 			System.out.println("in resting");
@@ -140,6 +140,19 @@ public class Main extends Application {
 		
 	
 	}
+	public void updateWeaponVisuals() {
+		// removes item weapons in backpack set to visibility false 
+		for (Item item :player.getInventory().getBackPackContents()) {
+			if ((item.getItemTypeEnum().equals(ItemTypeEnum.WEAPON)) && (!item.getVisability() )){
+					centerWindow.getChildren().remove(item.getWeaponType().getMainhandHeldItemForm().getItemForm());
+			}
+		}
+		if (!centerWindow.getChildren().contains(player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm())) {
+			centerWindow.getChildren().add(player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
+		} 
+		
+	}
+	
 	public void testForInteractions(Stage primaryStage) {
 		this.world.getDungeonlevel(this.player.getDepth()).getTile(this.player.getEntity().getxLoc(),this.player.getEntity().getyLoc()).fightTest();
 		if (this.world.getDungeonlevel(this.player.getDepth())
@@ -151,13 +164,7 @@ public class Main extends Application {
 		}
 		
 	}
-/*	
-	public void MovePlayerForm() {
-		playerForm.getBody().setTranslateX(this.world.getXPixel(this.player.getEntity().getxLoc()));
-		playerForm.getBody().setTranslateY(this.world.getYPixel(this.player.getEntity().getyLoc()));
-		
-	}
-*/
+
 	public void ProcessMobQueTurn (ArrayList<WorldEntity> mobQue){
 		if (mobQue.size() > 0) {
 			for(WorldEntity entity: mobQue) {

@@ -52,12 +52,12 @@ public class Mob {
 	private StatusState statusState;
 	private boolean restrictMove;
 	private WorldEntity entity;
-	private Pane root;
+	
 	
 	private Group entityVisual;
 	
 	public Mob(String name,int level ,Race race,CharacterClass cClass,WorldEntity entity,WorldArray world ) {
-		this.root = root;
+		
 		this.entity = entity;
 		this.alive = true;
 		this.world = world;
