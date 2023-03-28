@@ -37,7 +37,7 @@ public class Stats {
 		int value =0;
 		for (int i = 0 ; i < 3 ;i++) {
 			rand = new Random();
-			value+= rand.nextInt(6)+1;
+			value+= rand.nextInt(5)+1;
 		}
 		return value;
 	}

@@ -15,6 +15,8 @@ public class Item {
 	private UsedEnum location;
 	private int magicBonus;
 	private ItemTypeEnum itemTypeEnum;
+	private double opacity;
+	
 
 	
 
@@ -32,6 +34,7 @@ public class Item {
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
 		
+		
 	}
 	//Adding a weapon item
 	public Item(String weaponDesc,ItemTypeEnum typeOfItem,WeaponTypeEnum weaponType, QualityEnum quality,UsedEnum location,int magicBonus, int weight, int valueCopperCoin) {
@@ -46,6 +49,7 @@ public class Item {
 		this.itemTypeEnum = typeOfItem;
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
+	
 	}
 	
 	//Adding Armour
@@ -61,7 +65,10 @@ public class Item {
 		this.weight = weight;
 		this.baseValueInCopper = valueCopperCoin;
 		this.weightCapacity = 0;
+		
 	}
+	
+	
 	public ArmourType getArmourtype() {
 		return this.armourType;
 	}

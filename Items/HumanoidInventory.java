@@ -118,13 +118,19 @@ public class HumanoidInventory {
 		return this.backpack;
 	}
 	public void AddItemToBackPack(Item item) {
+	
+		if(item.getItemTypeEnum().equals(ItemTypeEnum.WEAPON)) {
+			
+		}
 		this.backpack.add(item);
+		
 	}
 	public int armourClass() {
 		return 5;
 	}
 
 	public  Item getMainHandItem(){
+		
 		return this.mainHand;
 	}
 	public Item getOffhandItem(){

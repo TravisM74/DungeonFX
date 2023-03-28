@@ -1,6 +1,7 @@
 package application;
 
 import Items.Item;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -18,6 +19,7 @@ public class WorldEntity {
 	private Mob mob;
 	private Player player;
 	private Item item;
+	private Group entityVisual;
 	
 	public WorldEntity(Entities entity) {
 		
@@ -64,6 +66,7 @@ public class WorldEntity {
 		}
 	}
 
+	
 	public Pane dispayLocation() {
 		VBox locationData = new VBox(2);
 		Label xyLoc = new Label ("Location X:" +this.xLoc + " Y:"+this.yLoc );

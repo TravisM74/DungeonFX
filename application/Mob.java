@@ -16,6 +16,7 @@ import World.WorldArray;
 import attributes.Stats;
 import attributes.Status;
 import attributes.StatusState;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,7 @@ public class Mob {
 	private Stats stats;
 	private CharacterClass cClass;
 	
+	
 	private int damageMod;
 	
 	private Status currentStatus;
@@ -50,9 +52,12 @@ public class Mob {
 	private StatusState statusState;
 	private boolean restrictMove;
 	private WorldEntity entity;
+	private Pane root;
 	
-	public Mob(String name,int level ,Race race,CharacterClass cClass,WorldEntity entity,WorldArray world) {
-		
+	private Group entityVisual;
+	
+	public Mob(String name,int level ,Race race,CharacterClass cClass,WorldEntity entity,WorldArray world ,Pane root) {
+		this.root = root;
 		this.entity = entity;
 		this.alive = true;
 		this.world = world;
@@ -66,11 +71,40 @@ public class Mob {
 		inventory = new HumanoidInventory();
 		init();
 		this.damageMod = 0;
+		this.entityVisual = new Group();
+		
 		
 		if (this.entity.getEntity().equals(Entities.PLAYER)) {
 			setPlayerSetup();
 		}
-	
+		
+		//addEntityVisualBody(entity.getxLoc(),entity.getyLoc());
+		//addEntityVisualWeapon();
+	}
+	/*
+	public void addEntityVisual(Group visual) {
+		entityVisual.getChildren().add(visual);
+	}
+	public void addEntityVisualBody(Color color,int x, int y) {
+		entityVisual.setTranslateX(world.getXPixel(x));
+		entityVisual.setTranslateY(world.getYPixel(y));
+		getCClass().getEntityForm().setEntityColor(color);
+		this.entityVisual.getChildren().add(getCClass().getEntityForm());
+	}
+	public void addEntityVisualWeapon() {
+		getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm().setTranslateX(world.getXPixel(entity.getxLoc())+entity.getMob().getCClass().getEntityForm().getRightHandX());
+		getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm().setTranslateY(world.getYPixel(entity.getxLoc())+entity.getMob().getCClass().getEntityForm().getRightHandY());
+		this.entityVisual.getChildren().add(getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
+	}
+	public void clearEntityVisual() {
+		entityVisual = new Group();
+	}
+	public Group getMobVisual() {
+		return this.entityVisual;
+	}
+	 */
+	public Pane getRoot() {
+		return this.root;
 	}
 	public Stats getStats() {
 		return this.stats;
@@ -279,7 +313,14 @@ public class Mob {
 			 if (this.getCClass().getEntityForm().getBody().getTranslateX() > 0) {
 				this.world.getDungeonlevel(getDepth()).MoveLeft(this.entity.getxLoc(), this.entity.getyLoc(), this.entity);
 				this.entity.setxLoc(this.entity.getxLoc()-1);
-				this.getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(this.getEntity().getxLoc()));				
+				//moves the body
+				this.getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(this.getEntity().getxLoc()));	
+				//moves the weapon
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+					.setTranslateX((world.getXPixel(this.getEntity().getxLoc())+getCClass().getEntityForm().getRightHandX()));
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+				.setTranslateY((world.getYPixel(this.getEntity().getyLoc())+getCClass().getEntityForm().getRightHandY()));
+				
 			 }
 		}
 	}
@@ -289,7 +330,12 @@ public class Mob {
 			if (this.getCClass().getEntityForm().getBody().getTranslateX() < 1900) {
 				this.world.getDungeonlevel(getDepth()).MoveRight(this.entity.getxLoc(), this.entity.getyLoc(), this.entity);
 				this.entity.setxLoc(this.entity.getxLoc()+1);
-				this.getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(this.getEntity().getxLoc()));	
+				this.getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(this.getEntity().getxLoc()));
+				
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+					.setTranslateX((world.getXPixel(this.getEntity().getxLoc())+getCClass().getEntityForm().getRightHandX()));
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+				.setTranslateY((world.getYPixel(this.getEntity().getyLoc())+getCClass().getEntityForm().getRightHandY()));
 			}
 		}
 	}
@@ -299,6 +345,11 @@ public class Mob {
 				this.world.getDungeonlevel(getDepth()).MoveUp(this.entity.getxLoc(), this.entity.getyLoc(), this.entity);
 				this.entity.setyLoc(this.entity.getyLoc()-1);
 				this.getCClass().getEntityForm().getBody().setTranslateY(world.getXPixel(this.getEntity().getyLoc()));	
+				
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+				.setTranslateX((world.getXPixel(this.getEntity().getxLoc())+getCClass().getEntityForm().getRightHandX()));
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+					.setTranslateY((world.getYPixel(this.getEntity().getyLoc())+getCClass().getEntityForm().getRightHandY()));
 			}
 		}
 	}
@@ -308,6 +359,12 @@ public class Mob {
 				this.world.getDungeonlevel(getDepth()).MoveDown(this.entity.getxLoc(), this.entity.getyLoc(), this.entity);
 				this.entity.setyLoc(this.entity.getyLoc()+1);
 				this.getCClass().getEntityForm().getBody().setTranslateY(world.getXPixel(this.getEntity().getyLoc()));	
+				
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+				.setTranslateX((world.getXPixel(this.getEntity().getxLoc())+getCClass().getEntityForm().getRightHandX()));
+				this.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+					.setTranslateY((world.getYPixel(this.getEntity().getyLoc())+getCClass().getEntityForm().getRightHandY()));
+			
 			}
 		}
 	}

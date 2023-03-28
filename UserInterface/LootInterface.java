@@ -94,7 +94,7 @@ public class LootInterface {
 	private void createCenterPanel(){
 		centerArea = new VBox();
 		centerArea.setBackground(new Background(new BackgroundFill(Color.SANDYBROWN, null, null)));
-		Label backPackContentsLabel = new Label ("Currently in backpack.");
+		Label backPackContentsLabel = new Label ("Currently carrying..");
 		backPackContentsLabel.setAlignment(Pos.CENTER);
 		centerArea.getChildren().add(backPackContentsLabel);
 		VBox playersBackPackInventory = new VBox();
