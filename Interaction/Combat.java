@@ -24,89 +24,107 @@ public class Combat {
 	private Random rand;
 	private ArrayList<String> combatText;
 	private WorldArray world;
-	private boolean resolved;
+
 	private int round;
 	private int mobCount;
+	private boolean mobDefeated;
+	private boolean playerDefeated;
 	
-		public Combat(Mob player,WorldEntity entity, WorldArray world ) {
+	
+		public Combat(Mob player, WorldArray world ) {
 			this.player = player;
-			this.entity = entity;
 			this.world = world;
-			this.resolved= false;
 			this.round = 0;
 			this.combatText = new ArrayList<>();
-			
+			this.mobDefeated = false;
+			this.playerDefeated = false;
 	}
 			
 	public boolean checkIfCanFight() {
 		if ((this.player.isAlive()) && (this.player.getStatusState() != (StatusState.UNCONCEOUS))) {
+			this.playerDefeated= false;
 			return true;
 		} else {
 			world.moveEntity(this.player, this.entity);
+			this.playerDefeated= true;
 			return false;
 			
 		}
 	}
 	
-	public boolean fightRound() {
+	public void playerAttacks(WorldEntity entity) {
+		this.round++;
+		this.entity = entity;
 		this.combatText.clear();
-		this.combatText.add(this.player.getName() + " attacks an ");
-		playerToHitMob(this.player, this.entity);
+		if((this.entity.getMob().isAlive()) && (this.player.isAlive())){
+			this.combatText.add(this.player.getName() + " attacks an ");
+			playerToHitMob(this.player, this.entity);
 			this.combatText.add(this.entity.getMob().getName()+ " with "+this.entity.getMob().getHitPoints()+ " HP's\n");
-		if (playerToHit.tryTohit()) {
-			damageToMobFromPlayer();
-		} else {
-			this.combatText.add(this.player.getName() +" missed ,");
+			if (playerToHit.tryTohit()) {
+				damageToMobFromPlayer();
+			} else {
+				this.combatText.add(this.player.getName() +" missed ,");
+			}
+			if (this.entity.getMob().getHitPoints() > 0) {
+				this.combatText.add("the "+ this.entity.getMob().getName()+" still stands and retaliates.\n");
+				this.mobDefeated= false;
+			} else {
+				this.entity.getMob().setDead();
+				this.mobDefeated = true;
+				this.entity.getMob().getCClass().getEntityForm().getBody().setRotate(90);
+				dropLoot();
+				this.combatText.add("you Killed "+this.entity.getMob().getName()+ " for a total damage of "+this.entity.getMob().getMaxHitPoints()+"\n ");
+				this.combatText.add("a fatal blow, the "+this.entity.getMob().getName() + " fall and lays there bleeding.\n");
+				
+				awardXP();
+			}
 		}
-		if (this.entity.getMob().getHitPoints() > 0) {
-			this.combatText.add("the "+ this.entity.getMob().getName()+" still stands and retaliates.\n");
-		} else {
-			this.entity.getMob().setDead();
-			this.entity.getMob().getCClass().getEntityForm().getBody().setRotate(90);
-			dropLoot();
-			this.combatText.add("you Killed "+entity.getMob().getName()+ " for a total damage of "+entity.getMob().getMaxHitPoints()+"\n ");
-			this.combatText.add("a fatal blow, the "+this.entity.getMob().getName() + " fall and lays there bleeding.\n");
-			this.resolved = true;
-			awardXP();
-		}
+	}
 		
-		
-		if((this.entity.getMob().isAlive() && (this.player.isAlive()))) {
+	public void MobAttacks(WorldEntity entity) {
+		this.entity = entity;
+		if((entity.getMob().isAlive() && (this.player.isAlive()))) {
 			toHitPlayer(this.player,this.entity);
 			
 			this.combatText.add("The "+this.entity.getMob().getName()+" attacks,");
 			if (mobToHitPlayer.tryTohit()) {
 				damageToPlayerFrom();
-				if(this.player.getHitPoints() <= 0) {
-					this.player.setDead();
-					this.resolved = true;
-		
-					this.combatText.add("The "+this.entity.getMob().getName()+" cheers your defeat...\n");
-					this.player.setStatusUnconcious();
-					this.player.restrictPlayerMovementOn();
-					world.moveEntity(player, entity);
-					this.player.getCClass().getEntityForm().getBody().setRotate(90);
-				}
 			} else {
-			
 				this.combatText.add("and the "+this.entity.getMob().getName() +" misses !\n");
+				this.playerDefeated = false;
 			}
+		}
+		if(this.player.getHitPoints() <= 0) {
+			this.player.setDead();
+			this.playerDefeated = true;
+			
+			this.combatText.add("The "+this.entity.getMob().getName()+" cheers your defeat...\n press(back) \n");
+			this.player.setStatusUnconcious();
+			this.player.restrictPlayerMovementOn();
+			moveMob();
+			this.player.getCClass().getEntityForm().getBody().setRotate(90);
 		}
 		if((this.player.getHitPoints() < -9)) {
 			this.player.setStateDead();
-	
+			this.playerDefeated = true;
 			this.combatText.add("\"as HUDSON says 'GAME OVER man it's GAME OVER.'\"\n");
-			this.resolved = true;
+		
 		} else if (this.player.getHitPoints() < 0){
 				this.player.isAlive();
 				this.player.setStatusUnconcious();
-				this.resolved = true;
+				this.playerDefeated = true;
+				
 		}
-		this.round++;
+		
+	}
+	public void moveMob() {
+		world.moveEntity(this.player, this.entity);
+		
+	}
 	
-		this.combatText.add("(------ End of round "+ round+" ------)"  );
+	public void endTurn() {	
+		this.combatText.add("(------ End of combat trun:"+ round+" ------)"  );
 		this.combatText.add(this.player.getName() +" fighting the "+this.entity.getMob().getName());
-		return this.resolved;
 	}
 
 	
@@ -124,7 +142,6 @@ public class Combat {
 	public void damageToMobFromPlayer() {
 		rand = new Random();
 		this.damage = 0;
-		
 		this.damage = rand.nextInt(this.player.getInventory().getMainHandItem().getWeaponType().getDamageDice())
 				+1
 				+this.player.getStats().getSMod()
@@ -208,6 +225,15 @@ public class Combat {
 	public WorldEntity getEntity() {
 		return this.entity;
 		
+	}
+	public boolean getPlayerDefeated() {
+		return this.playerDefeated;
+	}
+	public boolean getMobDefeated() {
+		return this.mobDefeated;
+	}
+	public void setMobDefeatFalse() {
+		this.mobDefeated = false;
 	}
 }
 

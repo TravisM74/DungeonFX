@@ -12,8 +12,10 @@ import World.Tile;
 import World.WorldArray;
 import application.Mob;
 import application.WorldEntity;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -25,79 +27,175 @@ import old_code.Player;
 public class CombatInterface {
 	
 	private ArrayList<WorldEntity> mobsGatheredFromTile;
-	private ArrayList<WorldEntity> defeatedMobs;
 	private WorldArray world;
-	private Stage combatStage;
+	private Scene scene;
 	private Scene combatScene;
-	private BorderPane combatRoot;
-	private boolean isFightResolved;
+	private Stage primaryStage;
+	
+	private int fightNumber;
+	
+	private BorderPane interfaceFrame;
+	private Combat thisFight;
+
+	
 	private ArrayList<String> combatRoundText;
 	private String combatText;
 
 	private Tile tile;
+	private Button fight;
+	private Button backButton;
+	private Button tryRanged;
+	private Button tryFlee;
+	private Button tryHeal;
 
+	private boolean fightResolved;
 	
 	private Mob player;
 	private WorldEntity entity;
 	
 	
-	public CombatInterface(Mob player, WorldEntity entity, WorldArray world, Stage primaryStage) {
-		this.combatRoot = new BorderPane();
+	public CombatInterface(Mob player, WorldEntity entity, WorldArray world, Stage primaryStage, Scene scene) {
+		this.scene = scene;
 		this.player = player;
 		this.entity = entity;
 		this.world = world;
-		this.isFightResolved = false;	
+		this.primaryStage =primaryStage;
+		this.fightResolved = false;
+		
+		
 		this.mobsGatheredFromTile = new ArrayList<>();
-		this.defeatedMobs = new ArrayList<>();
 		this.combatRoundText = new ArrayList<>();;
 		this.combatText = "";
-		BorderPane interfaceFrame = new BorderPane();
-					
-		combatRoot.getChildren().addAll(interfaceFrame);
-		
+		this.fightNumber= 0;
+
+			
 		this.tile = (this.world.getDungeonlevel(this.player.getDepth())
 					.getTile(this.player.getEntity().getxLoc(), this.player.getEntity().getyLoc()));
 		this.mobsGatheredFromTile = this.tile.getFightingMobEntitys();
-		
-		
-		VBox pStats = new VBox();
-		Pane playerStats = new Pane();
-		
-		for(WorldEntity entityToFight :this.mobsGatheredFromTile ) {
-			Combat thisFight = new Combat(this.player, entityToFight,this.world);
-			
-			while(!this.isFightResolved) {
-				this.combatText = "";
-				this.isFightResolved = thisFight.fightRound();
-				this.combatRoundText = thisFight.getCombatText();
-				for (String s:combatRoundText) {
-					System.out.println(s);
-					combatText+=(s +"\n");
-					interfaceFrame.setCenter(new Text(combatText));
-					interfaceFrame.setLeft(this.player.statsPane());
-					interfaceFrame.setRight(entityToFight.getMob().mobStatsPane());
-					
-				}
-								
-				//primaryStage.setScene(combatScene);
 				
-				//combatScene = new Scene(combatRoot,1200,800);
-				//primaryStage.show();
-				//Button nextRoundButton = new Button("Next ");
-				//interfaceFrame.setBottom(nextRoundButton);
-
-				thisFight.MessageDialog(player.getName() +" V " + entityToFight.getMob().getName(),combatText);	
-			}
+		
+		interfaceFrame = new BorderPane();
+		interfaceFrame.setTop(createTopPane());
+		interfaceFrame.setRight(createRightPane(this.mobsGatheredFromTile));
+		interfaceFrame.setLeft(createLeftPane());
+		interfaceFrame.setBottom(createBottomPane());
+		combatScene= new Scene(interfaceFrame,1000,900);
+		primaryStage.setScene(combatScene);
+		primaryStage.show();
+		
+		
+		if (this.fightNumber <= this.mobsGatheredFromTile.size()-1) {
+			this.entity = this.mobsGatheredFromTile.get(fightNumber);
+			thisFight = new Combat(this.player,this.world);
+			
+		} else {
+			this.fightResolved = true;
+		}
+		if (thisFight.getPlayerDefeated()) {
+			this.fightResolved = true;
 		}
 		
+		/*
+		if (this.fightResolved) {
+			primaryStage.setScene(scene);
+		}
+		*/
 	}
-/*
-	scene = new Scene(root,2200,1300);
-	lootScene = new Scene(lootRoot,2200,1300);
+
+	private Pane createTopPane() {
+		VBox topPane = new VBox();
+		topPane.setAlignment(Pos.CENTER);
+		Label topLabel = new Label("Combat ");
+		topPane.getChildren().add(topLabel);
+		return topPane;
+	}
+	private Pane createLeftPane() {
+		VBox leftPane = new VBox(30);
+		Label nameLabel = new Label(this.player.getName());
+		Pane statsPane = new Pane(this.player.getStatsPane());
+		leftPane.getChildren().add(statsPane);
+		return leftPane;
+	}
+	private Pane createRightPane(ArrayList<WorldEntity> mobsGatheredFromTile2) {
+		VBox rightPane = new VBox(30);
+		for (WorldEntity mobEntity :mobsGatheredFromTile2) {
+			rightPane.getChildren().add( new Pane(mobEntity.getMob().getStatsPane()));
+		}
+		return rightPane;
+	}
+	private Pane createBottomPane() {
+		HBox bottomPane = new HBox();
+		bottomPane = new HBox(10);
+		bottomPane.setAlignment(Pos.CENTER);
+		fight = new Button("Fight");
+		fight.setOnAction(e -> fightButtonAction());
+		Label warning = new Label("Melee will get free attack");
+		HBox altOptions = new HBox();
+		tryRanged = new Button("Try ranged attack");
+		tryRanged.setOnAction(e -> tryRangedButtonAction());
+		tryFlee = new Button("Try Flee");
+		tryFlee.setOnAction(e -> tryFleeButtonAction());
+		tryHeal = new Button ("Try Heal");
+		tryHeal.setOnAction(e -> tryHealButtonAction());
+		VBox addWarning = new VBox();
+		altOptions.getChildren().addAll(tryRanged,tryFlee,tryHeal);
+		addWarning.getChildren().addAll(altOptions,warning);
+		backButton = new Button("Back");
+		backButton.setOnAction( e -> backButtonClicked());
+		bottomPane.getChildren().addAll(fight,altOptions,backButton);
+		return bottomPane;
+	}
+	private void fightButtonAction() {
+		this.combatText = "";
+		thisFight.playerAttacks(this.entity);
+		thisFight.endTurn();
+		
+		if (thisFight.getMobDefeated()) {
+			this.fightNumber++;
+		} else {
+			thisFight.MobAttacks(this.entity);
+			thisFight.endTurn();
+		}
+		if (this.mobsGatheredFromTile.size()-1 > this.fightNumber) {
+			for (int i = this.fightNumber; i < this.mobsGatheredFromTile.size()-1; i++) {
+				thisFight.MobAttacks(this.entity);
+				thisFight.endTurn();
+			} 
+		} else {
+			this.combatText = "the fight is over.. \n (press back) \n  ";
+			resetInterface();
+		}
+		combatTextReport();
+	}
+	private void resetInterface() {
+		this.fightNumber = 0;
+		this.combatText = "";
+		this.mobsGatheredFromTile.clear();
+		this.fightResolved = false;
+	}
+	private void combatTextReport() {
+		this.combatRoundText = thisFight.getCombatText();
+		for (String s:combatRoundText) {
+			System.out.println(s);
+			combatText+=(s +"\n");
+			interfaceFrame.setCenter(new Text(combatText));
+			interfaceFrame.setLeft(createLeftPane());
+			interfaceFrame.setRight(createRightPane(mobsGatheredFromTile));
+		}
+	}
+	private void backButtonClicked() {
 	
-	movementControl(primaryStage);
-	
-	primaryStage.setScene(scene);
-*/
+		primaryStage.setScene(scene);
+	}
+	private void tryRangedButtonAction() {
+		
+	}
+	private void tryFleeButtonAction() {
+		
+	}
+	private void tryHealButtonAction() {
+		
+	}
+
 
 }

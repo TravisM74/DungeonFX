@@ -154,13 +154,13 @@ public class Main extends Application {
 	}
 	
 	public void testForInteractions(Stage primaryStage) {
-		this.world.getDungeonlevel(this.player.getDepth()).getTile(this.player.getEntity().getxLoc(),this.player.getEntity().getyLoc()).fightTest();
+		//this.world.getDungeonlevel(this.player.getDepth()).getTile(this.player.getEntity().getxLoc(),this.player.getEntity().getyLoc()).fightTest();
 		if (this.world.getDungeonlevel(this.player.getDepth())
 				.getTile(this.player.getEntity().getxLoc(),this.player.getEntity().getyLoc())
 				.fightTest()) {
-			combatInt = new CombatInterface(this.player,this.entity, this.world, primaryStage);
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			combatInt = new CombatInterface(this.player,this.entity, this.world, primaryStage, this.scene);
+			//primaryStage.setScene(scene);
+			//primaryStage.show();
 		}
 		
 	}
