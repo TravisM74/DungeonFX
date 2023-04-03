@@ -268,6 +268,9 @@ public class Mob {
 	public void gainExperiance(int value) {
 		this.experiance += value; 
 	}
+	public StatusState getStatusState() {
+		return this.statusState;
+	}
 	public void setStatusUnconcious() {
 		this.status =new Status(StatusState.UNCONCEOUS);
 		this.statusState = StatusState.UNCONCEOUS;
@@ -287,9 +290,7 @@ public class Mob {
 		this.status = new Status(StatusState.DEAD);
 		this.statusState = StatusState.DEAD;
 	}
-	public StatusState getStatusState() {
-		return this.statusState;
-	}
+	
 	public Status getStatus() {
 		return this.status;
 	}

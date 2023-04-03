@@ -158,7 +158,7 @@ public class Main extends Application {
 		if (this.world.getDungeonlevel(this.player.getDepth())
 				.getTile(this.player.getEntity().getxLoc(),this.player.getEntity().getyLoc())
 				.fightTest()) {
-			combatInt = new CombatInterface(this.player,this.entity, this.world, primaryStage, this.scene);
+			this.combatInt = new CombatInterface(this.player,this.entity, this.world, primaryStage, this.scene);
 			//primaryStage.setScene(scene);
 			//primaryStage.show();
 		}

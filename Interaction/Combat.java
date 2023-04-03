@@ -16,6 +16,7 @@ import old_code.Player;
 
 public class Combat {
 	private WorldEntity entity;
+	private WorldEntity playerEntity;
 	private Mob player;
 	private ToHitAC0 playerToHit;
 	private ToHitAC0 mobToHitPlayer;
@@ -26,35 +27,70 @@ public class Combat {
 	private WorldArray world;
 
 	private int round;
-	private int mobCount;
 	private boolean mobDefeated;
 	private boolean playerDefeated;
 	
 	
-		public Combat(Mob player, WorldArray world ) {
-			this.player = player;
-			this.world = world;
-			this.round = 0;
-			this.combatText = new ArrayList<>();
-			this.mobDefeated = false;
-			this.playerDefeated = false;
+	
+	public Combat(Mob player, WorldArray world ) {
+		this.player = player;
+		this.world = world;
+		this.round = 0;
+		this.combatText = new ArrayList<>();
+		this.mobDefeated = false;
+		this.playerDefeated = false;
 	}
-			
-	public boolean checkIfCanFight() {
-		if ((this.player.isAlive()) && (this.player.getStatusState() != (StatusState.UNCONCEOUS))) {
-			this.playerDefeated= false;
-			return true;
-		} else {
-			world.moveEntity(this.player, this.entity);
-			this.playerDefeated= true;
-			return false;
-			
+	
+	public Combat(WorldEntity playerEnt , WorldEntity mob) {
+		this.playerEntity = playerEnt;
+		this.entity = mob;
+		this.mobDefeated = false;
+		this.playerDefeated = false;
+		this.combatText = new ArrayList<>();
+	}
+	
+	public void fightRound(Mob attacker, WorldEntity defender) {
+		Random rand = new Random();
+		int defenderDamage = 0;
+		ToHitAC0 currentFight = new ToHitAC0(attacker.getEntity(), defender);
+		if (currentFight.tryTohit()) {
+			defenderDamage =
+					rand.nextInt(attacker.getEntity().getItem().getWeaponType().getDamageDice()+1)
+					+attacker.getEntity().getItem().getMagicDamageBonus()
+					+attacker.getEntity().getMob().getStats().getSMod()
+					+attacker.getEntity().getMob().getDamageMod();
+			defender.getMob().takeDamage(defenderDamage);
+			this.combatText.add("attacker " + attacker.getEntity().getMob().getName() +" hit "+defender.getMob().getName() + " for " + defenderDamage);
 		}
+		if ((defender.getMob().getHitPoints() < 0) && defender.getEntity().equals(Entities.MOB)) {
+			defender.getMob().setDead();
+			this.combatText.add("a fatal blow, the "+ defender.getMob().getName() + " falls to the floor dead and bleeding.\n");
+			defender.getMob().getCClass().getEntityForm().getBody().setRotate(90);
+			attacker.getEntity().getMob().gainExperiance(defender.getMob().getCClass().getXPValue());
+			dropLoot(attacker.getEntity(),defender);
+			this.mobDefeated = true ;
+		}
+		if ((defender.getMob().getHitPoints() < 0) && defender.getEntity().equals(Entities.PLAYER)) {
+			if (defender.getMob().getHitPoints() >= -10) {
+				defender.getMob().setDead();
+				this.combatText.add("a fatal blow, the "+ defender.getMob().getName() + " falls to the floor DEAD and bleeding.\n");
+			}
+			if (defender.getMob().getHitPoints() > 0) {
+				defender.getMob().setStatusUnconcious();
+				this.combatText.add("a near fatal blow, the "+ defender.getMob().getName() + " falls to the unconcious and bleeding.\n");
+				defender.getMob().getCClass().getEntityForm().getBody().setRotate(90);
+				this.playerDefeated = true;
+			}
+			world.moveEntity(attacker, defender);
+			//loot the player here when mob leaves area.
+		}
+		
 	}
 	
 	public void playerAttacks(WorldEntity entity) {
-		this.round++;
+		this.round = this.round +1;;
 		this.entity = entity;
+		
 		this.combatText.clear();
 		if((this.entity.getMob().isAlive()) && (this.player.isAlive())){
 			this.combatText.add(this.player.getName() + " attacks an ");
@@ -81,8 +117,9 @@ public class Combat {
 		}
 	}
 		
-	public void MobAttacks(WorldEntity entity) {
+	public void mobAttackTurn(WorldEntity entity) {
 		this.entity = entity;
+		
 		if((entity.getMob().isAlive() && (this.player.isAlive()))) {
 			toHitPlayer(this.player,this.entity);
 			
@@ -98,7 +135,7 @@ public class Combat {
 			this.player.setDead();
 			this.playerDefeated = true;
 			
-			this.combatText.add("The "+this.entity.getMob().getName()+" cheers your defeat...\n press(back) \n");
+			this.combatText.add("The "+this.entity.getMob().getName()+" cheers your defeat...\n  \n");
 			this.player.setStatusUnconcious();
 			this.player.restrictPlayerMovementOn();
 			moveMob();
@@ -122,8 +159,8 @@ public class Combat {
 		
 	}
 	
-	public void endTurn() {	
-		this.combatText.add("(------ End of combat trun:"+ round+" ------)"  );
+	public void endTurn(String name) {	
+		this.combatText.add("(------ End of "+name +"'s combat turn:"+ this.round+" ------)"  );
 		this.combatText.add(this.player.getName() +" fighting the "+this.entity.getMob().getName());
 	}
 
@@ -181,15 +218,43 @@ public class Combat {
 		this.player.gainExperiance(this.entity.getMob().getCClass().getXPValue());
 		
 	}
+	/*
 	public void MessageDialog(String data,String title) {
 		JOptionPane.showMessageDialog(null,
 				title, data,
 				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+	*/
 	
 	public ArrayList<String> getCombatText() {
 		return this.combatText;
+	}
+	public void dropLoot(WorldEntity player, WorldEntity defeatedEntity) {
+		System.out.println("mob copper coin:"+defeatedEntity.getMob().getInventory().getCopperCoin());
+		System.out.println("mob silver coin:"+defeatedEntity.getMob().getInventory().getSilverCoin());
+		System.out.println("mob Gold coin:"+defeatedEntity.getMob().getInventory().getGoldCoin());
+		System.out.println("mob plat coin:"+defeatedEntity.getMob().getInventory().getPlatCoin());
+		player.getMob().getInventory().addCopperCoin(defeatedEntity.getMob().getInventory().getCopperCoin());
+		player.getMob().getInventory().addSilverCoin(defeatedEntity.getMob().getInventory().getSilverCoin());
+		player.getMob().getInventory().addGoldCoin(defeatedEntity.getMob().getInventory().getGoldCoin());
+		player.getMob().getInventory().addPlatCoin(defeatedEntity.getMob().getInventory().getPlatCoin());
+		System.out.println("player copper coin:"+defeatedEntity.getMob().getInventory().getCopperCoin());
+		
+		WorldEntity newItemEntity = new WorldEntity(Entities.ITEM);
+		newItemEntity.setItem(defeatedEntity.getMob().getInventory().getMainHandItem());
+		world	.getDungeonlevel(player.getDepth())
+				.getTile(player.getxLoc(), player.getyLoc())
+				.createWorldEntityItem(newItemEntity);
+		
+		ArrayList<Item> mobsLoot = new ArrayList<>();
+		mobsLoot = defeatedEntity.getMob().getInventory().getBackPackContents();
+		for (Item item :mobsLoot) {
+			newItemEntity = new WorldEntity(Entities.ITEM);
+			newItemEntity.setItem(item);
+			world	.getDungeonlevel(player.getDepth())
+					.getTile(player.getxLoc(), player.getyLoc())
+					.createWorldEntityItem(newItemEntity);
+		}
 	}
 	public void dropLoot() {
 		System.out.println("mob copper coin:"+this.entity.getMob().getInventory().getCopperCoin());
@@ -234,6 +299,9 @@ public class Combat {
 	}
 	public void setMobDefeatFalse() {
 		this.mobDefeated = false;
+	}
+	public void setPlayerDefeatedFalse() {
+		this.playerDefeated = false;
 	}
 }
 

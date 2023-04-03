@@ -17,7 +17,7 @@ public class WorldEntity {
 	private int detectRange;
 	private Entities entity;
 	private Mob mob;
-	private Player player;
+	
 	private Item item;
 	private Group entityVisual;
 	
@@ -122,12 +122,7 @@ public class WorldEntity {
 	public Mob getMob() {
 		return this.mob;
 	}
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-	public Player getPlayer() {
-		return this.player;
-	}
+	
 	public String getDescription() {
 		return this.desciption;
 	}

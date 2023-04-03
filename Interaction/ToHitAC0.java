@@ -3,6 +3,7 @@ package Interaction;
 import java.util.Random;
 
 import application.CharClass;
+import application.WorldEntity;
 
 public class ToHitAC0 {
 	private CharClass cClass;
@@ -13,6 +14,26 @@ public class ToHitAC0 {
 	
 	private Random rand;
 	
+	public ToHitAC0(WorldEntity attacker, WorldEntity defender) {
+		this.cClass = attacker.getMob().getCClass().getCharClass();
+		this.level = attacker.getMob().getLevel();
+		switch(attacker.getMob().getCClass().getCharClass()) {
+			case FIGHTER:
+				this.thac0 = 20-(level - 1);
+				break;
+			case ORC_FIGHTER:
+				this.thac0 = 20-(level - 1);
+				break;
+			case BARBARIAN:
+				this.thac0 = 20-(level - 1);;
+				break;
+			case THEIF: 
+				this.thac0 = 20-((level/2)- 1);
+				break;
+		}
+		
+	}
+	
 	public ToHitAC0(int armourClass ,int level ,CharClass cClass) {
 		this.armourClass = armourClass;
 		this.level = level;
@@ -21,16 +42,16 @@ public class ToHitAC0 {
 		
 		switch (this.cClass) {
 			case FIGHTER:
-				this.thac0 = 20;
+				this.thac0 = 20-(level - 1);
 				break;
 			case ORC_FIGHTER:
-				this.thac0 = 20;
+				this.thac0 = 20-(level - 1);
 				break;
 			case BARBARIAN:
-				this.thac0 = 20;
+				this.thac0 = 20-(level - 1);;
 				break;
 			case THEIF: 
-				this.thac0 = 18;
+				this.thac0 = 20-((level/2)- 1);
 				break;
 		}	
 		

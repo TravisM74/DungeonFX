@@ -16,6 +16,7 @@ public class CharacterClass {
 	private int armourClass;
 	private int init;
 	private int xpValue;
+	
 	private Humanoid entityForm;
 	private Color hairColor;
 	private Color skinColor;
@@ -34,6 +35,7 @@ public class CharacterClass {
 		switch (charClass) {
 		case FIGHTER:
 			this.hitDice = 10;
+			
 			this.classname = "Fighter";
 			this.hairColor = Color.BROWN;
 			this.skinColor =Color.CORNSILK;
