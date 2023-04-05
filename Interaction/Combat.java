@@ -12,7 +12,7 @@ import application.Entities;
 import application.Mob;
 import application.WorldEntity;
 import attributes.StatusState;
-import old_code.Player;
+
 
 public class Combat {
 	private WorldEntity entity;

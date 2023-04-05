@@ -5,7 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import old_code.Player;
+
 
 public class WorldEntity {
 	

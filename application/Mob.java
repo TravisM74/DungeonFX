@@ -25,7 +25,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import old_code.PlayerInventory;
+
 
 public class Mob {
 	private int level;

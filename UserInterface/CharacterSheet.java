@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import old_code.Player;
+
 
 public class CharacterSheet {
 	Scene characterSheet;

@@ -10,7 +10,7 @@ import application.WorldEntity;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import old_code.Player;
+
 
 public class WorldArray {
 	

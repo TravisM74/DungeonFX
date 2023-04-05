@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import old_code.Player;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

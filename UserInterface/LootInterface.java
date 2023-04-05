@@ -27,7 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import old_code.Player;
+
 
 public class LootInterface {
 	
