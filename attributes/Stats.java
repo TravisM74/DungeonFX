@@ -55,34 +55,27 @@ public class Stats {
 	}
 	
 	public int getStrength() {
-		return this.strength + sMod;
+		return this.strength ;
 	}
 	public int getDexterity() {
-		return this.dexterity + dMod;
+		return this.dexterity;
 	}
 	public int getConstitution() {
-		return this.constitution + cMod;
+		return this.constitution ;
 	}
 	
-	public void setSrengthMod(int smod) {
-		this.sMod+= smod;
-	}
+	
 	public int getSMod() {
-		return sMod;
+		return statsMod.statApprase(this.strength);
 	}
 	public int getDMod() {
-		return dMod;
+		return  statsMod.statApprase(this.dexterity);
 	}
 	public int getCMod() {
-		return cMod;
+		return statsMod.statApprase(this.constitution);
 	}
 	
-	public void setDexterityMod(int smod) {
-		this.dMod+= smod;
-	}
-	public void setConstitutionMod(int smod) {
-		this.cMod+= smod;
-	}
+	
 	
 	public String toSting() {
 		return ("< --   Current Stats    --> \n"+
