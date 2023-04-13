@@ -85,6 +85,7 @@ public class CharacterSheet {
 		root.setLeft(leftPane);
 	}
 	public void CharaterSheetOpen() {
+		createCenter();
 		stage.setScene(characterSheet);
 	}
 	public void isclickedClose() {

@@ -52,6 +52,7 @@ public class Combat {
 	public void fightRound(Mob attacker, WorldEntity defender) {
 		Random rand = new Random();
 		int defenderDamage = 0;
+		this.round++;
 		ToHitAC0 currentFight = new ToHitAC0(attacker.getEntity(), defender);
 		if (currentFight.tryTohit()) {
 			defenderDamage =
@@ -62,7 +63,7 @@ public class Combat {
 			defender.getMob().takeDamage(defenderDamage);
 			this.combatText.add("attacker " + attacker.getEntity().getMob().getName() +" hit "+defender.getMob().getName() + " for " + defenderDamage);
 		}
-		if ((defender.getMob().getHitPoints() < 0) && defender.getEntity().equals(Entities.MOB)) {
+		if ((defender.getMob().getHitPoints() < 0) && defender.getEntityEnum().equals(Entities.MOB)) {
 			defender.getMob().setDead();
 			this.combatText.add("a fatal blow, the "+ defender.getMob().getName() + " falls to the floor dead and bleeding.\n");
 			defender.getMob().getCClass().getEntityForm().getBody().setRotate(90);
@@ -70,7 +71,7 @@ public class Combat {
 			dropLoot(attacker.getEntity(),defender);
 			this.mobDefeated = true ;
 		}
-		if ((defender.getMob().getHitPoints() < 0) && defender.getEntity().equals(Entities.PLAYER)) {
+		if ((defender.getMob().getHitPoints() < 0) && defender.getEntityEnum().equals(Entities.PLAYER)) {
 			if (defender.getMob().getHitPoints() >= -10) {
 				defender.getMob().setDead();
 				this.combatText.add("a fatal blow, the "+ defender.getMob().getName() + " falls to the floor DEAD and bleeding.\n");
@@ -82,7 +83,9 @@ public class Combat {
 				this.playerDefeated = true;
 			}
 			world.moveEntity(attacker, defender);
+			System.out.println(defender.getMob().getStatus());
 			//loot the player here when mob leaves area.
+			
 		}
 		
 	}
@@ -154,6 +157,8 @@ public class Combat {
 		}
 		
 	}
+	
+	
 	public void moveMob() {
 		world.moveEntity(this.player, this.entity);
 		
@@ -176,6 +181,8 @@ public class Combat {
 				this.entity.getMob().getLevel(),
 				this.entity.getMob().getCClass().getCharClass());
 	}
+	
+	
 	public void damageToMobFromPlayer() {
 		rand = new Random();
 		this.damage = 0;
@@ -204,27 +211,24 @@ public class Combat {
 				+this.entity.getMob().getInventory().getMainHandItem().getQuality().getModifer()
 				+this.entity.getMob().getInventory().getMainHandItem().getMagicDamageBonus();
 		System.out.println("damage by mob :" +this.damage);
-		/*
-		if (this.damage < 0) {
-			this.damage = 0 ;
-		}
-		*/
+		
 		System.out.println("damage by mob :" +this.damage);
 		this.player.takeDamage(this.damage);
 		this.combatText.add(this.entity.getMob().getName() + " hits " + this.player.getName()+ " for "+this.damage+" damage with a "+this.entity.getMob().getInventory().getMainHandItem()+".\n");
 	}
 	
+	
 	public void awardXP() {
 		this.player.gainExperiance(this.entity.getMob().getCClass().getXPValue());
 		
 	}
-	/*
+	
 	public void MessageDialog(String data,String title) {
 		JOptionPane.showMessageDialog(null,
 				title, data,
 				JOptionPane.INFORMATION_MESSAGE);
 	}
-	*/
+	
 	
 	public ArrayList<String> getCombatText() {
 		return this.combatText;

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.swing.JDialog;
 
+import Combat.CombatRound;
 import Interaction.Combat;
 import Interaction.ToHitAC0;
 import Items.Item;
@@ -44,14 +45,11 @@ public class CombatInterface {
 	private String combatText;
 
 	private Tile tile;
+	
 	private Button fight;
-	
 	private Button backButton;
-	
 	private Button tryRanged;
-
 	private Button tryFlee;
-
 	private Button tryHeal;
 
 
@@ -119,6 +117,10 @@ public class CombatInterface {
 			backButton.setDisable(false);
 		}
 	}
+	private void newCombatMethod() {
+		CombatRound combat = new CombatRound(this.player.getEntity(), this.world);
+		combatRoundText = combat.getCombatText();
+	}
 
 	private Pane createTopPane() {
 		VBox topPane = new VBox();
@@ -134,9 +136,10 @@ public class CombatInterface {
 		leftPane.getChildren().addAll(nameLabel,statsPane);
 		return leftPane;
 	}
-	private Pane createRightPane(ArrayList<WorldEntity> mobsGatheredFromTile2) {
+	
+	private Pane createRightPane(ArrayList<WorldEntity> mobsGatheredFromTile) {
 		VBox rightPane = new VBox(30);
-		for (WorldEntity mobEntity :mobsGatheredFromTile2) {
+		for (WorldEntity mobEntity :mobsGatheredFromTile) {
 			rightPane.getChildren().add( new Pane(mobEntity.getMob().getStatsPane()));
 		}
 		return rightPane;
@@ -148,6 +151,7 @@ public class CombatInterface {
 		
 		fight = new Button("Fight");
 		fight.setOnAction(e -> fightButtonAction());
+		//fight.setOnAction(e -> newCombatMethod());
 		fight.setDisable(false);
 		
 		Label warning = new Label("Melee will get free attack");
@@ -201,6 +205,7 @@ public class CombatInterface {
 		combatTextReport();
 		fightCycle();
 	}
+	
 	private void resetInterface() {
 		this.fightNumber = 0;
 		this.combatText = "";

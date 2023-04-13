@@ -30,7 +30,7 @@ public class FightControl {
 					+attacker.getMob().getStats().getSMod()
 					+attacker.getMob().getDamageMod());
 		}
-		if ((defender.getMob().getHitPoints() < 0) && defender.getEntity().equals(Entities.MOB)) {
+		if ((defender.getMob().getHitPoints() < 0) && defender.getEntityEnum().equals(Entities.MOB)) {
 			defender.getMob().setDead();
 		}
 		

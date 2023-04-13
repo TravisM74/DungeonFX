@@ -56,7 +56,7 @@ public class WorldEntity {
 			break;
 		case PLAYER:
 			this.detectRange = 6;
-			this.canMove = false;
+			this.canMove = true;
 			this.desciption = "...";
 			break;
 		case SAFE_FLOOR:
@@ -85,7 +85,7 @@ public class WorldEntity {
 		return this.item;
 	}
 
-	public Entities getEntity() {
+	public Entities getEntityEnum() {
 		return this.entity;
 	}
 

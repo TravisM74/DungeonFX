@@ -74,7 +74,7 @@ public class Mob {
 		this.entityVisual = new Group();
 		
 		
-		if (this.entity.getEntity().equals(Entities.PLAYER)) {
+		if (this.entity.getEntityEnum().equals(Entities.PLAYER)) {
 			setPlayerSetup();
 		}
 		

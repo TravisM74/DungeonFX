@@ -58,8 +58,6 @@ public class Main extends Application {
 	public final int WIDTH = 39;
 	public final int HEIGHT = 19;
 	
-	
-	//private Player player;
 	private Mob player;
 
 	private WorldArray world;
@@ -78,12 +76,12 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		this.stage=primaryStage;
 		mobQue = new ArrayList<>();
-							
 		makeBoard();
 		this.world = new WorldArray();
 		createPlayer();
 		//moveButtons = new MovementControlButtons(this.player);
 		root = new BorderPane();
+		
 		gameWindows = new BorderPane();
 		centerWindow = new Pane();
 		
@@ -92,21 +90,25 @@ public class Main extends Application {
 			newGeneratedOrcMob();
 		}
 		//main PlayWindow name
-		centerWindow.getChildren().addAll(board,playerForm.getBody(),mainhandHeld.getItemForm());
-		gameWindows.setCenter(centerWindow);
-		scene = new Scene(root,2200,1300);
+		//centerWindow.getChildren().addAll(board,playerForm.getBody(),mainhandHeld.getItemForm());
+		//gameWindows.setCenter(centerWindow);
 		
+		scene = new Scene(root,2200,1300);
 		cSheet = new CharacterSheet(this.player ,this.stage, this.scene);
 		
 		movementControl(primaryStage);
-		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 	}
+	
+	
+	
+/*	
 	public Pane getRoot() {
 		return this.root;
 	}
+*/
 	
 	public void createPlayer() {
 		CharacterClass cClass  = new CharacterClass(CharClass.FIGHTER);
@@ -119,9 +121,7 @@ public class Main extends Application {
 		this.player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm().setTranslateY(player.getCClass().getEntityForm().getTranslateY()+player.getCClass().getEntityForm().getRightHandY());
 		
 		mainhandHeld = this.player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm();
-
-		
-		
+	
 	}
 	
 	public void processTurnEvents(Stage primaryStage) {
@@ -136,10 +136,8 @@ public class Main extends Application {
 			System.out.println("in resting");
 			this.player.addHealth(player.getStatus().gethealthRegen());
 		}
-
-		
-	
 	}
+	
 	public void updateWeaponVisuals() {
 		// removes item weapons in backpack set to visibility false 
 		for (Item item :player.getInventory().getBackPackContents()) {
@@ -150,7 +148,6 @@ public class Main extends Application {
 		if (!centerWindow.getChildren().contains(player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm())) {
 			centerWindow.getChildren().add(player.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
 		} 
-		
 	}
 	
 	public void testForInteractions(Stage primaryStage) {
@@ -238,11 +235,12 @@ public class Main extends Application {
 					
 					break;
 				case C:
+					//CharacterSheet cSheet = new CharacterSheet(this.player,this.stage,this.scene);
 					cSheet.CharaterSheetOpen();
 					cSheet.refreshPanels();
 					break;
 			
-				//Test button to get Wep in hand
+				//Test button to get Wep in hand view
 				case V:
 					ItemInterface itemInt = new ItemInterface(playerForm,scene,stage);
 					itemInt.openItemPane();
@@ -317,45 +315,45 @@ public class Main extends Application {
 				if ((player.getEntity().getxLoc() == xLoc)&&(player.getEntity().getyLoc() == yLoc)) {
 					//not spawning orc on player...
 				} else {
-					//creates the orcEntity
-					this.world.getDungeonlevel(player.getDepth()).getTile(xLoc, yLoc).add(orcEntity);
-					this.world.getDungeonlevel(player.getDepth()).getTile(xLoc, yLoc);			
-					orcEntity.setDepth(player.getDepth());
-					orcEntity.setxLoc(xLoc);
-					orcEntity.setyLoc(yLoc);
-					System.out.println(orcEntity.getxLoc() +":" + orcEntity.getyLoc());
-					// assign it a weapon
-					LootTables lootTable = new LootTables();
-					orcEntity.getMob().getInventory().setMainHandItem(lootTable.getRandomCommonWeapon());
-					orcEntity.getMob().getInventory().addCopperCoin(rand.nextInt(25));
-					orcEntity.getMob().setDamageMod(2);
-					
-					//create its visualForm	
-	
-					orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(orcEntity.getxLoc()));
-					orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateY(world.getYPixel(orcEntity.getyLoc()));
-					orcEntity.getMob().getCClass().getEntityForm().setEntityColor(Color.GREEN);
-					centerWindow.getChildren().add(orcEntity.getMob().getCClass().getEntityForm().getBody());
-					
-					//create its weponForm	
-					
-					createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
-								.setTranslateX(world.getXPixel(orcEntity.getxLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandX());
-					createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
-								.setTranslateY(world.getXPixel(orcEntity.getyLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandY());
-					centerWindow.getChildren().add(createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
-					
-					//in  Mob()
-					/*
-					orcEntity.getMob().addEntityVisualBody(Color.GREEN,orcEntity.getxLoc(),orcEntity.getyLoc());
-					
-					orcEntity.getMob().addEntityVisualWeapon();
-					centerWindow.getChildren().add(orcEntity.getMob().getMobVisual());
-				    */
-					mobQue.add(orcEntity);
-					notValidSpot = false;
-				}
+				//creates the orcEntity
+				this.world.getDungeonlevel(player.getDepth()).getTile(xLoc, yLoc).add(orcEntity);
+				this.world.getDungeonlevel(player.getDepth()).getTile(xLoc, yLoc);			
+				orcEntity.setDepth(player.getDepth());
+				orcEntity.setxLoc(xLoc);
+				orcEntity.setyLoc(yLoc);
+				System.out.println(orcEntity.getxLoc() +":" + orcEntity.getyLoc());
+				// assign it a weapon
+				LootTables lootTable = new LootTables();
+				orcEntity.getMob().getInventory().setMainHandItem(lootTable.getRandomCommonWeapon());
+				orcEntity.getMob().getInventory().addCopperCoin(rand.nextInt(25));
+				orcEntity.getMob().setDamageMod(2);
+				
+				//create its visualForm	
+
+				orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateX(world.getXPixel(orcEntity.getxLoc()));
+				orcEntity.getMob().getCClass().getEntityForm().getBody().setTranslateY(world.getYPixel(orcEntity.getyLoc()));
+				orcEntity.getMob().getCClass().getEntityForm().setEntityColor(Color.GREEN);
+				centerWindow.getChildren().add(orcEntity.getMob().getCClass().getEntityForm().getBody());
+				
+				//create its weponForm	
+				
+				createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+							.setTranslateX(world.getXPixel(orcEntity.getxLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandX());
+				createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm()
+							.setTranslateY(world.getXPixel(orcEntity.getyLoc())+orcEntity.getMob().getCClass().getEntityForm().getRightHandY());
+				centerWindow.getChildren().add(createdMob.getInventory().getMainHandItem().getWeaponType().getMainhandHeldItemForm().getItemForm());
+				
+				//in  Mob()
+				/*
+				orcEntity.getMob().addEntityVisualBody(Color.GREEN,orcEntity.getxLoc(),orcEntity.getyLoc());
+				
+				orcEntity.getMob().addEntityVisualWeapon();
+				centerWindow.getChildren().add(orcEntity.getMob().getMobVisual());
+			    */
+				mobQue.add(orcEntity);
+				notValidSpot = false;
 			}
+		}
 		
 	}
 	

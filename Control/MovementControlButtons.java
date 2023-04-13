@@ -1,24 +1,26 @@
 package Control;
 
 import World.WorldArray;
+import application.Mob;
+import application.WorldEntity;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import old_code.Player;
+
 
 public class MovementControlButtons {
 		BorderPane rootPane;
-		Player player;
+		WorldEntity player;
 		
 	
-	public MovementControlButtons(Player player) {
-		this.player = player;
+	public MovementControlButtons(Mob player2) {
+		this.player = player2;
 		this.rootPane = new BorderPane();
 		VBox upPane = new VBox();
 		Button upButton = new Button(" UP ");
 		upButton.setOnAction(e -> { 
-			this.player.moveUp();
+			this.player.getMob().moveUp();
 		});
 		upPane.getChildren().add(upButton);
 		upPane.setAlignment(Pos.CENTER);
@@ -27,7 +29,7 @@ public class MovementControlButtons {
 		Button downButton = new Button(" Down ");
 		VBox downPane = new VBox();
 		downButton.setOnAction(e -> { 
-			this.player.moveDown();
+			this.player.getMob().moveDown();
 		});
 		downPane.getChildren().add(downButton);
 		downPane.setAlignment(Pos.CENTER);
@@ -36,7 +38,7 @@ public class MovementControlButtons {
 		Button leftButton = new Button(" Left ");
 		VBox leftPane = new VBox();
 		leftButton.setOnAction(e -> { 
-			this.player.moveLeft();
+			this.player.getMob().moveLeft();
 		});
 		leftPane.getChildren().add(leftButton);
 		leftPane.setAlignment(Pos.CENTER);
@@ -46,7 +48,7 @@ public class MovementControlButtons {
 		VBox rightPane = new VBox();
 		
 		rightButton.setOnAction(e -> { 
-			this.player.moveRight();
+			this.player.getMob().moveRight();
 		});
 		rightPane.getChildren().add(rightButton);
 		rightPane.setAlignment(Pos.CENTER);

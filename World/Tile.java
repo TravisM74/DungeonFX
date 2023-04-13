@@ -44,7 +44,7 @@ public class Tile {
 	}
 	public boolean fightTest() {
 		for(WorldEntity entity : this.tile) {
-			if (entity.getEntity().equals(Entities.MOB)) {
+			if (entity.getEntityEnum().equals(Entities.MOB)) {
 				
 					System.out.println("mob found");
 				return true;
@@ -54,19 +54,19 @@ public class Tile {
 	}
 	public boolean interactableTest() {
 		for(WorldEntity entity : this.tile) {
-			if (entity.getEntity().equals(Entities.ITEM)) {
+			if (entity.getEntityEnum().equals(Entities.ITEM)) {
 				System.out.println("Item found");
 				return true;
 			}
-			if (entity.getEntity().equals(Entities.PORTAL)) {
+			if (entity.getEntityEnum().equals(Entities.PORTAL)) {
 				System.out.println("Portal found");
 				return true;
 			}
-			if (entity.getEntity().equals(Entities.STAIRS)) {
+			if (entity.getEntityEnum().equals(Entities.STAIRS)) {
 				System.out.println("Stairs found");
 				return true;
 			}
-			if (entity.getEntity().equals(Entities.SHOP)) {
+			if (entity.getEntityEnum().equals(Entities.SHOP)) {
 				System.out.println("shop found");
 				return true;
 			}
@@ -76,7 +76,7 @@ public class Tile {
 	public ArrayList<WorldEntity> getLootItems(){
 		ArrayList<WorldEntity> lootItems = new ArrayList<>();
 		for(int i = 0 ; i < this.tile.size(); i++) {
-			if (this.tile.get(i).getEntity().equals(Entities.ITEM)) {
+			if (this.tile.get(i).getEntityEnum().equals(Entities.ITEM)) {
 				lootItems.add(this.tile.get(i));
 			}
 		}
@@ -86,7 +86,7 @@ public class Tile {
 		ArrayList<WorldEntity> fightingMobs = new ArrayList<>();
 	
 		for(int i = 0 ; i < this.tile.size(); i++) {
-			if ((this.tile.get(i).getEntity().equals(Entities.MOB))&& (this.tile.get(i).getMob().isAlive())) {
+			if ((this.tile.get(i).getEntityEnum().equals(Entities.MOB))&& (this.tile.get(i).getMob().isAlive())) {
 				fightingMobs.add(this.tile.get(i));
 			}
 		}
@@ -100,9 +100,9 @@ public class Tile {
 		aroundYou = aroundYou.concat(desc);
 		if (!this.tile.isEmpty()) {
 			for(int i = 0 ; i < this.tile.size(); i++) {
-				if (this.tile.get(i).getEntity().equals(Entities.MOB)) {
+				if (this.tile.get(i).getEntityEnum().equals(Entities.MOB)) {
 					desc =(tile.get(i).getMob().getName()+ " \n");
-				} else if(this.tile.get(i).getEntity().equals(Entities.ITEM)) {
+				} else if(this.tile.get(i).getEntityEnum().equals(Entities.ITEM)) {
 					desc= ("an  "+tile.get(i).getItem().toString());
 				} else  {
 				//	desc= (" "+tile.get(i).getEntity().toString();
