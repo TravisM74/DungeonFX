@@ -17,7 +17,7 @@ public class ToHitAC0 {
 	public ToHitAC0(WorldEntity attacker, WorldEntity defender) {
 		this.cClass = attacker.getMob().getCClass().getCharClass();
 		this.level = attacker.getMob().getLevel();
-		switch(attacker.getMob().getCClass().getCharClass()) {
+		switch(this.cClass) {
 			case FIGHTER:
 				this.thac0 = 20-(level - 1);
 				break;
